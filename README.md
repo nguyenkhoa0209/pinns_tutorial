@@ -1,2 +1,1 @@
-# pinns_tutorial
-Tutorials for Physics-Informed Neural Networks
+# Tutorials for Physics-Informed Neural Networks
