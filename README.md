@@ -2,26 +2,26 @@
 
 This repository provides step-by-step guides to Physics-informed neural networks (PINNs).
 
-#### Part 1: Data-driven machine learning methods: strengths and limits
+### Part 1: Data-driven machine learning methods: strengths and limits
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1na1yVhBF9MYPntbr6bfGd6qwWKl-uJGS?usp=sharing)
 
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/nguyenkhoa0209/pinns_tutorial/main?labpath=part1_data_driven_ml.ipynb)
 
-#### Part 2: PINNs and their scope of use
+### Part 2: PINNs and their scope of use
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1EEDH099GalrgqNbEaDgPm-OCHULBQ3HT?usp=sharing)
 
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/nguyenkhoa0209/pinns_tutorial/main?labpath=part2_pinns_scope_of_use.ipynb)
 
-#### Part 3: Strategies to improve PINNs performance _(available soon)_
+### Part 3: Strategies to improve PINNs performance _(available soon)_
 
-#### Part 4: Integrate the geometries into PINNs _(available soon)_
+### Part 4: Integrate the geometries into PINNs _(available soon)_
 
-#### Acknowledgement
+### Acknowledgement
 This work is funded by Michelin and CEA through the Industrial Data Analytics and Machine Learning chair of ENS Paris-Saclay
 
-#### References
+### References
 Below is the list of references used in this repository.
 
 [1] Raissi, M., Perdikaris, P. and Karniadakis, G.E., 2019. Physics-informed neural networks: A deep learning framework for solving forward and inverse problems involving nonlinear partial differential equations. Journal of Computational physics, 378, pp.686-707. [link to paper](https://www.sciencedirect.com/science/article/pii/S0021999118307125?casa_token=6eq_4Fcj6HsAAAAA:i_A9-C4tqlPBFV-9qT6uyIM6rJ-s1KTs9lRnvWxTU_zBnz-_Z8P-WdnkRE9w2awrQ0IFDTZRlzgJ)
