@@ -3,14 +3,20 @@
 This repository provides step-by-step guides to Physics-informed neural networks (PINNs).
 
 ### Part 1: Data-driven machine learning methods: strengths and limits
+In this section, we only focus on data-driven machine learning methods. The tutorial shows how these methods approximate the solution of a parial diffrential equation (PDE).
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1na1yVhBF9MYPntbr6bfGd6qwWKl-uJGS?usp=sharing)
+To run online the tutorial:
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1na1yVhBF9MYPntbr6bfGd6qwWKl-uJGS?usp=sharing) (recommended, a google account is required)
 
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/nguyenkhoa0209/pinns_tutorial/main?labpath=part1_data_driven_ml.ipynb)
 
 ### Part 2: PINNs and their scope of use
+In this section, we focus on PINNs. The tutorial shows how to use PINNs to solve different types of problems involving partial differential equation (PDE) or system of PDEs.
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1EEDH099GalrgqNbEaDgPm-OCHULBQ3HT?usp=sharing)
+To run online the tutorial:
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1EEDH099GalrgqNbEaDgPm-OCHULBQ3HT?usp=sharing) (recommended, a google account is required)
 
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/nguyenkhoa0209/pinns_tutorial/main?labpath=part2_pinns_scope_of_use.ipynb)
 
