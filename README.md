@@ -19,7 +19,7 @@ This repository provides step-by-step guides to Physics-informed neural networks
 ### Part 4: Integrate the geometries into PINNs _(available soon)_
 
 ### Acknowledgement
-This work is funded by Michelin and CEA through the Industrial Data Analytics and Machine Learning chair of ENS Paris-Saclay
+This work is funded by Michelin and CEA through the Industrial Data Analytics and Machine Learning chair of Borelli Center, ENS Paris-Saclay.
 
 ### References
 Below is the list of references used in this repository.
