@@ -321,8 +321,8 @@ class PINNs:
                         loss_bc += tf.reduce_mean(tf.square(u_pred_bc[:, i:(i + 1)] - u_star_bc[:, i:(i + 1)]))
                         loss_obs += tf.reduce_mean(tf.square(u_pred_bc[:, i:(i+1)] - u_star_bc[:, i:(i+1)]))
                     else:
-                        loss_bc += tf.reduce_mean(tf.square(u_star_bc[:, i:(i + 1)] - u_star_bc[:, i:(i + 1)]))
-                        loss_obs += tf.reduce_mean(tf.square(u_star_bc[:, i:(i+1)] - u_star_bc[:, i:(i+1)]))
+                        loss_bc +=  tf.convert_to_tensor(0, dtype='float64')
+                        loss_obs +=  tf.convert_to_tensor(0, dtype='float64')
 
             if self.nb_init > 0:
                 for i in range(u_star_init.shape[1]):
@@ -330,24 +330,24 @@ class PINNs:
                         loss_init += tf.reduce_mean(tf.square(u_pred_init[:, i:(i + 1)] - u_star_init[:, i:(i + 1)]))
                         loss_obs += tf.reduce_mean(tf.square(u_pred_init[:, i:(i+1)] - u_star_init[:, i:(i+1)]))
                     else:
-                        loss_init += tf.reduce_mean(tf.square(u_star_init[:, i:(i + 1)] - u_star_init[:, i:(i + 1)]))
-                        loss_obs += tf.reduce_mean(tf.square(u_star_init[:, i:(i+1)] - u_star_init[:, i:(i+1)]))
+                        loss_init +=  tf.convert_to_tensor(0, dtype='float64')
+                        loss_obs +=  tf.convert_to_tensor(0, dtype='float64')
             if self.nb_data > 0:
                 for i in range(u_star_data.shape[1]):
                     if not tf.math.is_nan(u_star_data[0, i:(i+1)]):
                         loss_data += tf.reduce_mean(tf.square(u_pred_data[:, i:(i + 1)] - u_star_data[:, i:(i + 1)]))
                         loss_obs += tf.reduce_mean(tf.square(u_pred_data[:, i:(i + 1)] - u_star_data[:, i:(i + 1)]))
                     else:
-                        loss_data += tf.reduce_mean(tf.square(u_star_data[:, i:(i + 1)] - u_star_data[:, i:(i + 1)]))
-                        loss_obs += tf.reduce_mean(tf.square(u_star_data[:, i:(i+1)] - u_star_data[:, i:(i+1)]))
+                        loss_data +=  tf.convert_to_tensor(0, dtype='float64')
+                        loss_obs +=  tf.convert_to_tensor(0, dtype='float64')
             if self.nb_other >0:
                 for i in range(u_star_other.shape[1]):
                     if not tf.math.is_nan(u_star_other[0, i:(i+1)]):
                         loss_other += tf.reduce_mean(tf.square(u_pred_other[:, i:(i + 1)] - u_star_other[:, i:(i + 1)]))
                         loss_obs += tf.reduce_mean(tf.square(u_pred_other[:, i:(i+1)] - u_star_other[:, i:(i+1)]))
                     else:
-                        loss_other += tf.reduce_mean(tf.square(u_star_other[:, i:(i + 1)] - u_star_other[:, i:(i + 1)]))
-                        loss_obs += tf.reduce_mean(tf.square(u_star_other[:, i:(i+1)] - u_star_other[:, i:(i+1)]))
+                        loss_other +=  tf.convert_to_tensor(0, dtype='float64')
+                        loss_obs +=  tf.convert_to_tensor(0, dtype='float64') 
         else:
             for i_param in range(self.nb_param):
                 if self.nb_bc > 0:
@@ -358,9 +358,7 @@ class PINNs:
                                 u_pred_bc[size_bc * i_param:size_bc * (i_param + 1), i:(i+1)] - u_star_bc[size_bc * i_param:size_bc * (
                                             i_param + 1), i:(i+1)]))
                         else:
-                            loss_obs += tf.reduce_mean(tf.square(
-                                u_star_bc[size_bc * i_param:size_bc * (i_param + 1), i:(i+1)] - u_star_bc[size_bc * i_param:size_bc * (
-                                            i_param + 1), i:(i+1)]))
+                            loss_obs += tf.convert_to_tensor(0, dtype='float64')
 
                 if self.nb_init > 0:
                     size_init = int(u_star_init.shape[0] / self.nb_param)
@@ -377,9 +375,7 @@ class PINNs:
                                     u_pred_init[size_init * i_param:size_init * (i_param + 1), i:(i+1)] - u_star_init[size_init * i_param:size_init * (
                                                 i_param + 1), i:(i+1)]))
                         else:
-                            loss_obs += tf.reduce_mean(tf.square(
-                                    u_star_init[size_init * i_param:size_init * (i_param + 1), i:(i+1)] - u_star_init[size_init * i_param:size_init * (
-                                                i_param + 1), i:(i+1)]))
+                            loss_obs += tf.convert_to_tensor(0, dtype='float64')
 
                 if self.nb_data > 0:
                     size_data = int(u_star_data.shape[0] / self.nb_param)
@@ -389,9 +385,7 @@ class PINNs:
                                 u_pred_data[size_data * i_param:size_data * (i_param + 1), i:(i+1)] - u_star_data[size_data * i_param:size_data * (
                                             i_param + 1), i:(i+1)]))
                         else:
-                            loss_obs += tf.reduce_mean(tf.square(
-                                u_star_data[size_data * i_param:size_data * (i_param + 1), i:(i+1)] - u_star_data[size_data * i_param:size_data * (
-                                            i_param + 1), i:(i+1)]))
+                            loss_obs += tf.convert_to_tensor(0, dtype='float64')
 
                 if self.nb_other > 0:
                     size_other = int(u_star_other.shape[0] / self.nb_param)
@@ -401,9 +395,7 @@ class PINNs:
                                 u_pred_other[size_other * i_param:size_other * (i_param + 1), i:(i+1)] - u_star_other[size_other * i_param:size_other * (
                                             i_param + 1), i:(i+1)]))
                         else:
-                            loss_obs += tf.reduce_mean(tf.square(
-                                u_star_other[size_other * i_param:size_other * (i_param + 1), i:(i+1)] - u_star_other[size_other * i_param:size_other * (
-                                            i_param + 1), i:(i+1)]))
+                            loss_obs += tf.convert_to_tensor(0, dtype='float64')
 
                 index_i_param = tf.where(X_f[:, -1] == param_f[i_param])
                 index_i_param = tf.reshape(index_i_param, [-1])
