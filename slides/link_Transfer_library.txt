@@ -1,0 +1,2 @@
+Link to documentation: https://adapt-python.github.io/adapt/
+Link to github page: https://github.com/adapt-python/adapt
