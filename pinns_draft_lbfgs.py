@@ -78,7 +78,7 @@ class PINNs:
     def __init__(self, X_colloc, net_transform, net_pde_user, loss_f, networks, lr, param_pde=None,
                  type_problem='forward', type_formulation='strong', thres=None,
                  X_bc=None, u_bc=None, net_bc=None, X_init=None, u_init=None, net_init=None, X_data=None, u_data=None,
-                 X_other=None, u_other=None, net_other=None,X_test=None, u_test=None, X_traction=None, w_pde=1, normalize_data = False, period_w_pde=1, slope_recovery=False,model_init=None):
+                 X_other=None, u_other=None, net_other=None,X_test=None, u_test=None, X_traction=None, w_pde=1,w_init=1, w_bc=1,w_other=1,w_data=1, normalize_data = False, period_w_pde=1, slope_recovery=False,model_init=None):
         """
         Initialisation function of PINNs class
         """
@@ -91,6 +91,7 @@ class PINNs:
         else:
             self.X_bc = tf.convert_to_tensor(X_bc, dtype='float64')
             self.u_bc = tf.convert_to_tensor(u_bc, dtype='float64')
+            self.w_bc = tf.convert_to_tensor(w_bc, dtype='float64')
             self.nb_bc = self.X_bc.shape[0]
             if net_bc is None:
                 self.net_bc = net_transform
@@ -105,6 +106,7 @@ class PINNs:
         else:
             self.X_init = tf.convert_to_tensor(X_init, dtype='float64')
             self.u_init = tf.convert_to_tensor(u_init, dtype='float64')
+            self.w_init = tf.convert_to_tensor(w_init, dtype='float64')
             self.nb_init = self.X_init.shape[0]
             if net_init is None:
                 self.net_init = net_transform
@@ -119,6 +121,7 @@ class PINNs:
         else:
             self.X_data = tf.convert_to_tensor(X_data, dtype='float64')
             self.u_data = tf.convert_to_tensor(u_data, dtype='float64')
+            self.w_data = tf.convert_to_tensor(w_data, dtype='float64')
             self.nb_data = self.X_data.shape[0]
 
         if X_other is None:
@@ -129,6 +132,7 @@ class PINNs:
         else:
             self.X_other = tf.convert_to_tensor(X_other, dtype='float64')
             self.u_other = tf.convert_to_tensor(u_other, dtype='float64')
+            self.w_other = tf.convert_to_tensor(w_other, dtype='float64')
             self.nb_other = self.X_other.shape[0]
             if net_other is None:
                 self.net_other = net_transform
@@ -362,11 +366,12 @@ class PINNs:
                                 loss_bc += tf.reduce_mean(tf.square(u_pred_bc[:, i:(i + 1)] - u_star_bc[:, i:(i + 1)]))/tf.reduce_mean(tf.square(u_star_bc[:, i:(i + 1)]))
                                 loss_obs += tf.reduce_mean(tf.square(u_pred_bc[:, i:(i + 1)] - u_star_bc[:, i:(i + 1)]))/tf.reduce_mean(tf.square(u_star_bc[:, i:(i + 1)]))
                             else:
-                                loss_bc += tf.reduce_mean(tf.square(u_pred_bc[:, i:(i + 1)] - u_star_bc[:, i:(i + 1)]))
-                                loss_obs += tf.reduce_mean(tf.square(u_pred_bc[:, i:(i+1)] - u_star_bc[:, i:(i+1)]))
+                                loss_bc += tf.reduce_mean(tf.square(u_pred_bc[:, i:(i + 1)] - u_star_bc[:, i:(i + 1)])*self.w_bc)
+                                loss_obs += tf.reduce_mean(tf.square(u_pred_bc[:, i:(i+1)] - u_star_bc[:, i:(i+1)])*self.w_bc)
                     else:
-                        loss_bc += tf.reduce_mean(tf.square(u_star_bc[:, i:(i + 1)] - u_star_bc[:, i:(i + 1)]))
-                        loss_obs += tf.reduce_mean(tf.square(u_star_bc[:, i:(i+1)] - u_star_bc[:, i:(i+1)]))
+                        #a = 1
+                        loss_bc += tf.convert_to_tensor(0, dtype='float64')# tf.reduce_mean(tf.square(u_star_bc[:, i:(i + 1)] - u_star_bc[:, i:(i + 1)]))
+                        loss_obs += tf.convert_to_tensor(0, dtype='float64')#tf.reduce_mean(tf.square(u_star_bc[:, i:(i+1)] - u_star_bc[:, i:(i+1)]))
 
             if self.nb_init > 0:
                 for i in range(u_star_init.shape[1]):
@@ -384,11 +389,12 @@ class PINNs:
                                 loss_init += tf.reduce_mean(tf.square(u_pred_init[:, i:(i + 1)] - u_star_init[:, i:(i + 1)]))/tf.reduce_mean(tf.square(u_star_init[:, i:(i + 1)]))
                                 loss_obs += tf.reduce_mean(tf.square(u_pred_init[:, i:(i + 1)] - u_star_init[:, i:(i + 1)]))/tf.reduce_mean(tf.square(u_star_init[:, i:(i + 1)]))
                             else:
-                                loss_init += tf.reduce_mean(tf.square(u_pred_init[:, i:(i + 1)] - u_star_init[:, i:(i + 1)]))
-                                loss_obs += tf.reduce_mean(tf.square(u_pred_init[:, i:(i+1)] - u_star_init[:, i:(i+1)]))
+                                loss_init += tf.reduce_mean(tf.square(u_pred_init[:, i:(i + 1)] - u_star_init[:, i:(i + 1)])*self.w_init)
+                                loss_obs += tf.reduce_mean(tf.square(u_pred_init[:, i:(i+1)] - u_star_init[:, i:(i+1)])*self.w_init)
                     else:
-                        loss_init += tf.reduce_mean(tf.square(u_star_init[:, i:(i + 1)] - u_star_init[:, i:(i + 1)]))
-                        loss_obs += tf.reduce_mean(tf.square(u_star_init[:, i:(i+1)] - u_star_init[:, i:(i+1)]))
+                        #a = 1
+                        loss_init += tf.convert_to_tensor(0, dtype='float64')# tf.reduce_mean(tf.square(u_star_init[:, i:(i + 1)] - u_star_init[:, i:(i + 1)]))
+                        loss_obs += tf.convert_to_tensor(0, dtype='float64')# tf.reduce_mean(tf.square(u_star_init[:, i:(i+1)] - u_star_init[:, i:(i+1)]))
             if self.nb_data > 0:
                 for i in range(u_star_data.shape[1]):
                     if not tf.math.is_nan(u_star_data[0, i:(i+1)]):
@@ -405,11 +411,12 @@ class PINNs:
                                 loss_data += tf.reduce_mean(tf.square(u_pred_data[:, i:(i + 1)] - u_star_data[:, i:(i + 1)]))/tf.reduce_mean(tf.square(u_star_data[:, i:(i + 1)]))
                                 loss_obs += tf.reduce_mean(tf.square(u_pred_data[:, i:(i+1)] - u_star_data[:, i:(i+1)]))/tf.reduce_mean(tf.square(u_star_data[:, i:(i + 1)]))
                             else:
-                                loss_data += tf.reduce_mean(tf.square(u_pred_data[:, i:(i + 1)] - u_star_data[:, i:(i + 1)]))
-                                loss_obs += tf.reduce_mean(tf.square(u_pred_data[:, i:(i + 1)] - u_star_data[:, i:(i + 1)]))
+                                loss_data += tf.reduce_mean(tf.square(u_pred_data[:, i:(i + 1)] - u_star_data[:, i:(i + 1)])*self.w_data)
+                                loss_obs += tf.reduce_mean(tf.square(u_pred_data[:, i:(i + 1)] - u_star_data[:, i:(i + 1)])*self.w_data)
                     else:
-                        loss_data += tf.reduce_mean(tf.square(u_star_data[:, i:(i + 1)] - u_star_data[:, i:(i + 1)]))
-                        loss_obs += tf.reduce_mean(tf.square(u_star_data[:, i:(i+1)] - u_star_data[:, i:(i+1)]))
+                        #a = 1
+                        loss_data += tf.convert_to_tensor(0, dtype='float64')# tf.reduce_mean(tf.square(u_star_data[:, i:(i + 1)] - u_star_data[:, i:(i + 1)]))
+                        loss_obs += tf.convert_to_tensor(0, dtype='float64')#tf.reduce_mean(tf.square(u_star_data[:, i:(i+1)] - u_star_data[:, i:(i+1)]))
             if self.nb_other >0:
                 for i in range(u_star_other.shape[1]):
                     if not tf.math.is_nan(u_star_other[0, i:(i+1)]):
@@ -426,11 +433,12 @@ class PINNs:
                                 loss_other += tf.reduce_mean(tf.square(u_pred_other[:, i:(i + 1)] - u_star_other[:, i:(i + 1)]))/tf.reduce_mean(tf.square(u_star_data[:, i:(i + 1)]))
                                 loss_obs += tf.reduce_mean(tf.square(u_pred_other[:, i:(i + 1)] - u_star_other[:, i:(i + 1)]))/tf.reduce_mean(tf.square(u_star_data[:, i:(i + 1)]))
                             else:
-                                loss_other += tf.reduce_mean(tf.square(u_pred_other[:, i:(i + 1)] - u_star_other[:, i:(i + 1)]))
-                                loss_obs += tf.reduce_mean(tf.square(u_pred_other[:, i:(i+1)] - u_star_other[:, i:(i+1)]))
+                                loss_other += tf.reduce_mean(tf.square(u_pred_other[:, i:(i + 1)] - u_star_other[:, i:(i + 1)])*self.w_other)
+                                loss_obs += tf.reduce_mean(tf.square(u_pred_other[:, i:(i+1)] - u_star_other[:, i:(i+1)])*self.w_other)
                     else:
-                        loss_other += tf.reduce_mean(tf.square(u_star_other[:, i:(i + 1)] - u_star_other[:, i:(i + 1)]))
-                        loss_obs += tf.reduce_mean(tf.square(u_star_other[:, i:(i+1)] - u_star_other[:, i:(i+1)]))
+                        #a = 1
+                        loss_other += tf.convert_to_tensor(0, dtype='float64')#tf.reduce_mean(tf.square(u_star_other[:, i:(i + 1)] - u_star_other[:, i:(i + 1)]))
+                        loss_obs += tf.convert_to_tensor(0, dtype='float64')#tf.reduce_mean(tf.square(u_star_other[:, i:(i+1)] - u_star_other[:, i:(i+1)]))
         else:
             for i_param in range(self.nb_param):
                 if self.nb_bc > 0:
